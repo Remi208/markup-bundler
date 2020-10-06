@@ -12,11 +12,11 @@ function generateHtmlPlugins(templateDir) {
   const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
   return templateFiles.map((item) => {
     const parts = item.split('.');
-    const name = parts[0];
+    const fileName = parts[0];
     const extension = parts[1];
     return new HtmlWebpackPlugin({
-      filename: `${name}.html`,
-      template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
+      filename: `${fileName}.${extension}`,
+      template: path.resolve(__dirname, `${templateDir}/${fileName}.${extension}`),
       inject: false,
     });
   });
@@ -38,6 +38,10 @@ const config = {
         extractComments: true,
       }),
     ],
+  },
+  devServer: {
+    contentBase: './src/html',
+    watchContentBase: true,
   },
   module: {
     rules: [
@@ -90,7 +94,7 @@ const config = {
         use: ['raw-loader'],
       },
       {
-        test: /\.(js)$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         use: ['babel-loader', 'eslint-loader'],
       },
@@ -136,10 +140,6 @@ const config = {
       {
         from: './src/fonts',
         to: './fonts',
-      },
-      {
-        from: './src/favicon',
-        to: './favicon',
       },
       {
         from: './src/images',
