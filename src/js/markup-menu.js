@@ -61,7 +61,7 @@
     document.head.appendChild(style);
     // eslint-disable-next-line array-callback-return
     filesList.map((key) => {
-      nav.innerHTML += `<a href="./${key}">${key}</a>`;
+      nav.innerHTML += `<a href="${key}">${key}</a>`;
     });
     document.body.appendChild(wrapper);
     let flag = localStorage.getItem('flag')

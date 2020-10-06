@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
-    "lint": "eslint --ext .jsx --ext .js src/",
+    "lint": "eslint --ext .jsx --ext .js src/ --fix",
     "flow": "flow",
     "build": "npm run lint & npm run flow & webpack --mode production && prettier --print-width=120 --parser html --write dist/*.html"
   },

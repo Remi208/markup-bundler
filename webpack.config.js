@@ -22,7 +22,7 @@ function generateHtmlPlugins(templateDir) {
   });
 }
 
-const htmlPlugins = generateHtmlPlugins('./src/html/');
+const htmlPlugins = generateHtmlPlugins('./src/html');
 
 const config = {
   entry: ['./src/js/index.js', './src/scss/index.scss'],
