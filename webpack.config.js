@@ -10,7 +10,11 @@ const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 function generateHtmlPlugins(templateDir) {
   const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
-  return templateFiles.map((item) => {
+  const htmlFiles = templateFiles.filter((item) => {
+    const parts = item.split('.');
+    return parts[1] === 'html';
+  });
+  return htmlFiles.map((item) => {
     const parts = item.split('.');
     const fileName = parts[0];
     const extension = parts[1];
@@ -22,10 +26,13 @@ function generateHtmlPlugins(templateDir) {
   });
 }
 
-const htmlPlugins = generateHtmlPlugins('./src/html/');
+const htmlPlugins = generateHtmlPlugins('./src/');
 
 const config = {
-  entry: ['./src/js/index.js', './src/scss/index.scss'],
+  entry: [
+    './src/js/index.js',
+    './src/scss/index.scss',
+  ],
   output: {
     filename: './js/bundle.js',
   },
@@ -40,8 +47,9 @@ const config = {
     ],
   },
   devServer: {
-    contentBase: './src/html',
+    contentBase: './src',
     watchContentBase: true,
+    port: 3000,
   },
   module: {
     rules: [
@@ -65,8 +73,8 @@ const config = {
             options: {
               ident: 'postcss',
               sourceMap: true,
-              plugins: () => [
-                // eslint-disable-next-line global-require
+              plugins: [
+                require('autoprefixer'),
                 require('cssnano')({
                   preset: [
                     'default',
@@ -91,12 +99,17 @@ const config = {
       {
         test: /\.html$/,
         include: path.resolve(__dirname, 'src/includes'),
-        use: ['raw-loader'],
+        use: [
+          'raw-loader',
+        ],
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader', 'eslint-loader'],
+        use: [
+          'babel-loader',
+          'eslint-loader',
+        ],
       },
       {
         test: /\.png$/,
@@ -114,7 +127,10 @@ const config = {
     ],
   },
   resolve: {
-    modules: ['node_modules', 'scss'],
+    modules: [
+      'node_modules',
+      'scss',
+    ],
   },
   plugins: [
     new SpriteLoaderPlugin({
